@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 //Defining the constants used throughout the code
-#define IP_ADDRESS "127.0.0.1" //localhost
+#define IP_ADDRESS "172.16.36.100" 
 #define IP_PROTOCOL 0
 #define PORT_NO 15050
 #define NET_BUF_SIZE 32
@@ -28,7 +28,7 @@ void clearBuf(char* b)
 		b[i] = '\0';
 }
 
-void Cipher(char ch)
+char Cipher(char ch)
 {
 	/*
 	* Code in this function exclusive ORs the input  

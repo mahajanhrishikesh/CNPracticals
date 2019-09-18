@@ -30,13 +30,36 @@ void clearBuf(char* b)
 		b[i] = '\0';
 }
 
-void Cipher(char ch)
+char Cipher(char ch)
 {
 	/*
 	* Code in this function exclusive ORs the input  
 	* character bitwise
 	*/
 	return ch ^ cipherKey;
+}
+
+int sendFile(FILE* fp, char* buf, int s) 
+{ 
+    int i, len; 
+    if (fp == NULL) { 
+        strcpy(buf, nofile); 
+        len = strlen(nofile); 
+        buf[len] = EOF; 
+        for (i = 0; i <= len; i++) 
+            buf[i] = Cipher(buf[i]); 
+        return 1; 
+    } 
+  
+    char ch, ch2; 
+    for (i = 0; i < s; i++) { 
+        ch = fgetc(fp); 
+        ch2 = Cipher(ch); 
+        buf[i] = ch2; 
+        if (ch == EOF) 
+            return 1; 
+    } 
+    return 0; 
 }
 
 int main()
@@ -46,11 +69,12 @@ int main()
 	*/
 	int sockfd, nBytes;
 	struct sockaddr_in addr_con;
-	int addrlen = sizeof(addr_con)
+	int addrlen = sizeof(addr_con);
 	addr_con.sin_family = AF_INET;
 	addr_con.sin_port = htons(PORT_NO);
 	addr_con.sin_addr.s_addr = INADDR_ANY;
 	char net_buf[NET_BUF_SIZE];
+	FILE* fp;
 
 	//Creating socket using the socket function
 	//socket function returns the file the descriptor
